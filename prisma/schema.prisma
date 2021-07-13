@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Province {
+  id   Int    @id @default(autoincrement())
+  name String
+  User User[]
+}
+
+model City {
+  id   Int    @id @default(autoincrement())
+  name String
+  User User[]
+}
+
+model User {
+  id                  Int       @id @default(autoincrement())
+  email               String    @unique
+  name                String?
+  phone_number        String?
+  profile_picture_url String?
+  Province            Province? @relation(fields: [province_id], references: [id])
+  province_id         Int?
+  City                City?     @relation(fields: [city_id], references: [id])
+  city_id             Int?
+  Pet                 Pet[]
+}
+
+model VaccineHistoryPhoto {
+  id                 Int            @id @default(autoincrement())
+  vaccine_history    VaccineHistory @relation(fields: [vaccine_history_id], references: [id])
+  vaccine_history_id Int
+}
+
+model VaccineType {
+  id             Int              @id @default(autoincrement())
+  name           String
+  VaccineHistory VaccineHistory[]
+}
+
+model VaccineHistory {
+  id                Int                   @id @default(autoincrement())
+  pet               Pet                   @relation(fields: [pet_id], references: [id])
+  pet_id            Int
+  date_administered DateTime
+  date_valid_until  DateTime
+  vaccine_type      VaccineType           @relation(fields: [vaccine_type_id], references: [id])
+  vaccine_type_id   Int
+  vaccine_photo     VaccineHistoryPhoto[]
+}
+
+model Pet {
+  id                  Int              @id @default(autoincrement())
+  user                User             @relation(fields: [user_id], references: [id])
+  user_id             Int              @unique
+  name                String
+  breed               String?
+  is_cat_friendly     Boolean?
+  is_child_friendly   Boolean?
+  color               String?
+  date_of_birth       DateTime?
+  is_dog_friendly     Boolean?
+  gender              Gender?
+  is_microchipped     Boolean?
+  is_neutered         Boolean?
+  profile_picture_url String?
+  VaccineHistory      VaccineHistory[]
+}
+
+enum Gender {
+  Male
+  Female
+}
