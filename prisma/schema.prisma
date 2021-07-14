@@ -26,6 +26,7 @@ model User {
   id                  Int       @id @default(autoincrement())
   email               String    @unique
   name                String?
+  username            String?
   phone_number        String?
   profile_picture_url String?
   Province            Province? @relation(fields: [province_id], references: [id])
@@ -64,15 +65,18 @@ model Pet {
   user_id             Int              @unique
   name                String
   breed               String?
-  is_cat_friendly     Boolean?
-  is_child_friendly   Boolean?
   color               String?
   date_of_birth       DateTime?
-  is_dog_friendly     Boolean?
+  species             String?
+  profile_picture_url String?
   gender              Gender?
+  is_cat_friendly     Boolean?
+  is_child_friendly   Boolean?
+  is_dog_friendly     Boolean?
   is_microchipped     Boolean?
   is_neutered         Boolean?
-  profile_picture_url String?
+  is_purebred         Boolean?
+  is_toddler_friendly Boolean?
   VaccineHistory      VaccineHistory[]
 }
 
