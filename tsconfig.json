@@ -2,7 +2,7 @@
     "extends": "fastify-tsconfig",
     "compilerOptions": {
         "outDir": "dist",
-        "strict": true
+        "strict": true,
     },
     "include": ["src/**/*.ts", "src/plugins/verify_token.tsa"]
 }

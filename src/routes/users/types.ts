@@ -1,19 +1,11 @@
 import { User } from "@prisma/client";
-import { FastifyRequest } from "fastify";
-
-// export interface User {
-//   id: 0,
-//   email: string,
-//   name: string | null,
-//   phone_number: string | null,
-//   profile_picture_url: string | null,
-//   province_id: number | null,
-//   city_id: number | null
-// }
+import { FastifyRequest, FastifyReply } from "fastify";
 
 export type UserRequest = FastifyRequest<{
   Params: {
-    user_id: string
+    user_id: number
   },
   Body: User
-}>
+}>;
+
+export type UserReply = FastifyReply;
