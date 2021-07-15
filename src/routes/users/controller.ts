@@ -12,6 +12,11 @@ const UserController = {
       const user = await database.user.findUnique({
         where: {
           id: user_id
+        },
+        include: {
+          City: true,
+          Province: true,
+          Pet: true
         }
       });
 

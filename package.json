@@ -11,7 +11,7 @@
     "start": "npm run build:ts && fastify start -l info dist/app.js",
     "build:ts": "tsc",
     "dev": "tsc && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"tsc -w\" \"fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js\"",
-    "database": "npx prisma run dev && npx prisma db seed --preview-feature"
+    "database": "npx prisma migrate dev && npx prisma db seed --preview-feature"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/klaustinw/docpawsid-backend#readme",
   "dependencies": {
     "@prisma/client": "^2.27.0",
+    "dayjs": "^1.10.6",
     "fastify": "^3.19.0",
     "fastify-autoload": "^3.3.1",
     "fastify-cli": "^2.13.0",

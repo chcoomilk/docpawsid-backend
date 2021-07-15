@@ -40,6 +40,7 @@ model VaccineHistoryPhoto {
   id                 Int            @id @default(autoincrement())
   vaccine_history    VaccineHistory @relation(fields: [vaccine_history_id], references: [id])
   vaccine_history_id Int
+  path               String
 }
 
 model VaccineType {
@@ -52,10 +53,10 @@ model VaccineHistory {
   id                Int                   @id @default(autoincrement())
   pet               Pet                   @relation(fields: [pet_id], references: [id])
   pet_id            Int
-  date_administered DateTime
-  date_valid_until  DateTime
-  vaccine_type      VaccineType           @relation(fields: [vaccine_type_id], references: [id])
-  vaccine_type_id   Int
+  date_administered DateTime?
+  date_valid_until  DateTime?
+  vaccine_type      VaccineType?          @relation(fields: [vaccine_type_id], references: [id])
+  vaccine_type_id   Int?
   vaccine_photo     VaccineHistoryPhoto[]
 }
 
