@@ -33,11 +33,12 @@
     "fastify-cors": "^6.0.1",
     "fastify-jwt": "^3.0.0",
     "fastify-multipart": "^4.0.7",
-    "fastify-oauth2": "^4.2.3",
     "fastify-plugin": "^3.0.0",
     "fastify-rate-limit": "^5.5.0",
     "fastify-sensible": "^3.1.0",
-    "fastify-static": "^4.2.2"
+    "fastify-static": "^4.2.2",
+    "gcp-metadata": "^4.3.0",
+    "google-auth-library": "^7.3.0"
   },
   "devDependencies": {
     "@types/busboy": "^0.2.4",

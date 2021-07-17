@@ -37,46 +37,42 @@ const VaccineController = {
     try {
       const vaccine_history = await database.vaccineHistory.findUnique({ where: { id: vaccine_history_id } });
       if (!vaccine_history) return rep.notFound();
-    } catch (error) {
-      return rep.internalServerError(error);
-    }
+      const parts = req.files();
 
-    const parts = req.files();
+      const vaccine_history_photos: VaccineHistoryPhoto[] = [];
+      let count;
+      count = await database.vaccineHistoryPhoto.count();
+      for await (const part of parts) {
+        const ext = parse_to_extension(part.mimetype);
+        const filename = `vaccine_history_${vaccine_history_id}_${count}.${ext}`;
+        const path = "uploads/" + filename;
 
-    const vaccine_history_photos: VaccineHistoryPhoto[] = [];
-    let count;
-    count = await database.vaccineHistoryPhoto.count();
-    try {
-    } catch (error) {
-      return rep.internalServerError(error);
-    }
+        try {
+          await save_file(part.file, filename);
+          let result = await database.vaccineHistoryPhoto.create({
+            data: {
+              vaccine_history_id: vaccine_history_id,
+              path: path
+            }
+          });
 
-    for await (const part of parts) {
-      const ext = parse_to_extension(part.mimetype);
-      const filename = `vaccine_history_${vaccine_history_id}_${count}.${ext}`;
-      const path = "uploads/" + filename; 
+          vaccine_history_photos.push(result);
+        } catch (error) {
+          console.log(error);
+          console.log("Error occured when putting a file, continuing...");
+          continue;
+        }
 
-      try {
-        await save_file(part.file, filename);
-        let result = await database.vaccineHistoryPhoto.create({
-          data: {
-            vaccine_history_id: vaccine_history_id,
-            path: path
-          }
-        });
-
-        vaccine_history_photos.push(result);
-      } catch (error) {
-        console.log(error);
-        console.log("Error occured when putting a file, continuing...");
-        continue;
+        count++;
       }
 
-      count++;
+      if (vaccine_history_photos[0]) {
+        rep.status(HttpStatusCode.CREATED);
+        return vaccine_history_photos;
+      }
+    } catch (error) {
+      return rep.internalServerError(error);
     }
-
-    rep.status(HttpStatusCode.CREATED);
-    return vaccine_history_photos;
   },
 
   async UpdateVaccineHistory(req: VaccineHistoryRequest, rep: VaccineReply) {
@@ -89,8 +85,8 @@ const VaccineController = {
           id: vaccine_history_id
         },
         data: {
-          date_administered: req.body.date_administered,
-          date_valid_until: req.body.date_valid_until,
+          date_administered: new Date(req.body.date_administered || ""),
+          date_valid_until: new Date(req.body.date_valid_until || ""),
           vaccine_type_id: req.body.vaccine_type_id
         }
       });

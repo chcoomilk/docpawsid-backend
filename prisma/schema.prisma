@@ -24,6 +24,7 @@ model City {
 
 model User {
   id                  Int       @id @default(autoincrement())
+  uid                 String    @unique
   email               String    @unique
   name                String?
   username            String?
@@ -63,7 +64,7 @@ model VaccineHistory {
 model Pet {
   id                  Int              @id @default(autoincrement())
   user                User             @relation(fields: [user_id], references: [id])
-  user_id             Int              @unique
+  user_id             Int              
   name                String
   breed               String?
   color               String?

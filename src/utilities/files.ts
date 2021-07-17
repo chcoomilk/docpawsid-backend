@@ -10,12 +10,7 @@ export const parse_to_extension = (mime_type: string) => {
 export const save_file = async (file: any, file_name: string) => {
   const pipeline = util.promisify(stream.pipeline);
   const write_stream = fs.createWriteStream("assets/users/" + file_name);
-  try {
-    await pipeline(file, write_stream);
-    return null;
-  } catch (error) {
-    return error;
-  }
+  await pipeline(file, write_stream);
 };
 
 export const delete_file = async (file_name: string) => {
