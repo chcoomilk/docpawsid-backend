@@ -67,4 +67,5 @@ dist
 .env
 prisma/migrations/*
 assets/users/*
+!assets/users/readme.md
 !prisma/migrations/migration_lock.toml
